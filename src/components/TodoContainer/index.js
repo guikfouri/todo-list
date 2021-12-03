@@ -1,26 +1,33 @@
 import React, { useState } from "react";
-import Container from "./styles";
+import { Container, Title } from "./styles";
 import TodoItem from "../TodoItem/index";
+import NewTodoItem from "../NewTodoItem/index";
+import Row from "../Row/index";
+import Col from "../Col/index";
 
-function TodoContainer({}) {
+const TodoContainer = ({}) => {
   const [items, setItems] = useState([]);
+
+  const removeItem = (todoItem) => {
+    setItems(items.filter((item) => item != todoItem));
+  };
 
   return (
     <Container>
       <Row>
-        <Column>
-          <h1>TO DO</h1>
-          {items.forEach((item) => (
-            <TodoItem item={item} />
+        <Col>
+          <Title>TO DO</Title>
+          {items.map((item, i) => (
+            <TodoItem key={i} item={item} removeItem={() => removeItem(item)} />
           ))}
-        </Column>
+        </Col>
 
-        <Column>
-          <NewItem />
-        </Column>
+        <Col>
+          <NewTodoItem addTodoItem={(item) => setItems([...items, item])} />
+        </Col>
       </Row>
     </Container>
   );
-}
+};
 
 export default TodoContainer;
